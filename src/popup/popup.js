@@ -20,12 +20,24 @@ async function updateUI(identity) {
 }
 
 async function handleGenerate() {
-    const identity = generateIdentity();
-    // Placeholder for email until Phase 2
-    identity.email = "pending...";
+    // Set loading state
+    els.btnGenerate.textContent = "GENERATING...";
+    els.btnGenerate.disabled = true;
 
-    await Storage.set(IDENTITY_KEY, identity);
-    updateUI(identity);
+    try {
+        const response = await chrome.runtime.sendMessage({ action: 'CMD_GENERATE_IDENTITY' });
+
+        if (response && response.status === 'success') {
+            updateUI(response.identity);
+        } else {
+            console.error("Generation failed:", response);
+        }
+    } catch (err) {
+        console.error("Message error:", err);
+    } finally {
+        els.btnGenerate.textContent = "NEW IDENTITY";
+        els.btnGenerate.disabled = false;
+    }
 }
 
 async function init() {
