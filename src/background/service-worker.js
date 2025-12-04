@@ -16,18 +16,38 @@ chrome.alarms.onAlarm.addListener(async (alarm) => {
     }
 });
 
+chrome.runtime.onInstalled.addListener(() => {
+    console.log("Trial Extension Installed");
+    chrome.contextMenus.create({
+        id: "trial-autofill",
+        title: "Trial: Auto-fill Form",
+        contexts: ["editable"]
+    });
+});
+
+chrome.contextMenus.onClicked.addListener(async (info, tab) => {
+    if (info.menuItemId === "trial-autofill") {
+        const identity = await Storage.get(IDENTITY_KEY);
+        if (identity) {
+            chrome.tabs.sendMessage(tab.id, {
+                action: 'CMD_AUTOFILL',
+                identity: identity
+            });
+        } else {
+            // Maybe open popup or alert?
+            console.warn("No identity to autofill");
+        }
+    }
+});
+
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.action === 'CMD_GENERATE_IDENTITY') {
         handleGenerateIdentity().then(sendResponse);
-        return true; // Keep channel open for async response
+        return true;
     } else if (message.action === 'CMD_CHECK_INBOX') {
         checkInbox().then(sendResponse);
         return true;
     }
-});
-
-chrome.runtime.onInstalled.addListener(() => {
-    console.log("Trial Extension Installed");
 });
 
 async function handleGenerateIdentity() {
