@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Trial</title>
   <link rel="stylesheet" href="../styles/main.css">
 </head>
+
 <body>
   <div class="container">
     <header>
@@ -35,8 +37,21 @@
       <div class="actions">
         <button id="btn-generate">NEW IDENTITY</button>
       </div>
+
+      <div id="inbox-section" class="inbox-container">
+        <div class="inbox-header">INBOX</div>
+        <div id="otp-display" class="otp-box hidden">
+          <span class="otp-label">CODE:</span>
+          <span id="otp-code" class="otp-value"></span>
+          <button id="btn-copy-otp" class="icon-btn">⎘</button>
+        </div>
+        <div id="email-list" class="email-list">
+          <div class="empty-state">No emails yet...</div>
+        </div>
+      </div>
     </main>
   </div>
   <script type="module" src="popup.js"></script>
 </body>
+
 </html>

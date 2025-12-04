@@ -6,7 +6,12 @@ const els = {
     username: document.getElementById('username'),
     password: document.getElementById('password'),
     email: document.getElementById('email'),
-    btnGenerate: document.getElementById('btn-generate')
+    btnGenerate: document.getElementById('btn-generate'),
+    // Inbox elements
+    emailList: document.getElementById('email-list'),
+    otpDisplay: document.getElementById('otp-display'),
+    otpCode: document.getElementById('otp-code'),
+    btnCopyOtp: document.getElementById('btn-copy-otp')
 };
 
 async function updateUI(identity) {
@@ -17,6 +22,43 @@ async function updateUI(identity) {
     els.password.textContent = identity.password;
     // Email logic will be added in Phase 2, for now placeholder or generated if we add it to generator
     els.email.textContent = identity.email || "Not connected";
+}
+
+async function checkInbox() {
+    try {
+        const response = await chrome.runtime.sendMessage({ action: 'CMD_CHECK_INBOX' });
+        if (response && response.status === 'success') {
+            renderInbox(response.messages);
+            if (response.latestOTP) {
+                showOTP(response.latestOTP);
+            }
+        }
+    } catch (err) {
+        console.error("Inbox check error:", err);
+    }
+}
+
+function renderInbox(messages) {
+    els.emailList.innerHTML = '';
+    if (!messages || messages.length === 0) {
+        els.emailList.innerHTML = '<div class="empty-state">No emails yet...</div>';
+        return;
+    }
+
+    messages.forEach(msg => {
+        const item = document.createElement('div');
+        item.className = 'email-item';
+        item.innerHTML = `
+      <div class="email-subject">${msg.subject}</div>
+      <div class="email-from">${msg.from}</div>
+    `;
+        els.emailList.appendChild(item);
+    });
+}
+
+function showOTP(code) {
+    els.otpCode.textContent = code;
+    els.otpDisplay.classList.remove('hidden');
 }
 
 async function handleGenerate() {
@@ -40,14 +82,29 @@ async function handleGenerate() {
     }
 }
 
+els.btnCopyOtp.addEventListener('click', () => {
+    const code = els.otpCode.textContent;
+    navigator.clipboard.writeText(code).then(() => {
+        // Visual feedback
+        els.btnCopyOtp.style.color = '#fff';
+        setTimeout(() => {
+            els.btnCopyOtp.style.color = '';
+        }, 200);
+    });
+});
+
 async function init() {
     const identity = await Storage.get(IDENTITY_KEY);
     if (identity) {
         updateUI(identity);
+        checkInbox(); // Check inbox on open
     } else {
         await handleGenerate();
     }
 }
+
+// Poll inbox while popup is open (every 5s)
+setInterval(checkInbox, 5000);
 
 els.btnGenerate.addEventListener('click', handleGenerate);
 

@@ -14,7 +14,8 @@ body {
   width: 320px;
   background-color: var(--bg-color);
   color: var(--text-color);
-  font-family: monospace; /* Fallback until Geist Mono is added */
+  font-family: monospace;
+  /* Fallback until Geist Mono is added */
   font-size: 12px;
 }
 
@@ -90,4 +91,117 @@ button:hover {
 
 button:active {
   transform: translateY(1px);
+}
+
+/* Inbox Styles */
+.inbox-container {
+  margin-top: 16px;
+  border-top: 1px solid var(--accent-color);
+  padding-top: 16px;
+}
+
+.inbox-header {
+  font-weight: bold;
+  margin-bottom: 8px;
+  color: #888;
+}
+
+.otp-box {
+  background-color: rgba(0, 255, 148, 0.1);
+  border: 1px solid var(--success-color);
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  animation: glitch 0.2s ease-in-out;
+}
+
+.otp-box.hidden {
+  display: none;
+}
+
+.otp-label {
+  color: var(--success-color);
+  font-weight: bold;
+}
+
+.otp-value {
+  color: var(--success-color);
+  font-size: 24px;
+  font-weight: bold;
+  letter-spacing: 2px;
+  text-shadow: 0 0 5px rgba(0, 255, 148, 0.5);
+}
+
+.email-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 150px;
+  overflow-y: auto;
+}
+
+.email-item {
+  background-color: var(--surface-color);
+  padding: 8px;
+  border: 1px solid var(--accent-color);
+  font-size: 11px;
+}
+
+.email-subject {
+  font-weight: bold;
+  color: var(--text-color);
+  margin-bottom: 4px;
+}
+
+.email-from {
+  color: #888;
+}
+
+.empty-state {
+  color: #555;
+  text-align: center;
+  padding: 16px;
+  font-style: italic;
+}
+
+.icon-btn {
+  background: none;
+  border: none;
+  color: var(--success-color);
+  font-size: 16px;
+  cursor: pointer;
+  padding: 4px;
+  width: auto;
+}
+
+.icon-btn:hover {
+  opacity: 0.8;
+}
+
+@keyframes glitch {
+  0% {
+    transform: translate(0)
+  }
+
+  20% {
+    transform: translate(-2px, 2px)
+  }
+
+  40% {
+    transform: translate(-2px, -2px)
+  }
+
+  60% {
+    transform: translate(2px, 2px)
+  }
+
+  80% {
+    transform: translate(2px, -2px)
+  }
+
+  100% {
+    transform: translate(0)
+  }
 }
