@@ -6,50 +6,67 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Trial</title>
   <link rel="stylesheet" href="../styles/main.css">
+  <!-- Preconnect for fonts if we were using Google Fonts, but we'll use system mono for speed/offline -->
 </head>
 
 <body>
   <div class="container">
-    <header>
-      <h1>TRIAL</h1>
+    <!-- Header -->
+    <header class="top-bar">
+      <div class="brand">Trial</div>
+      <div class="controls">
+        <button id="btn-new" class="btn-outline">new</button>
+        <button id="btn-hide" class="btn-outline">hide identity</button>
+        <div class="status-indicator">api ok</div>
+      </div>
     </header>
 
-    <main>
-      <div id="identity-grid" class="data-grid">
-        <div class="data-row" data-copy="name">
-          <span class="label">NAME</span>
-          <span class="value" id="full-name">...</span>
-        </div>
-        <div class="data-row" data-copy="username">
-          <span class="label">USER</span>
-          <span class="value" id="username">...</span>
-        </div>
-        <div class="data-row" data-copy="password">
-          <span class="label">PASS</span>
-          <span class="value" id="password">...</span>
-        </div>
-        <div class="data-row" data-copy="email">
-          <span class="label">MAIL</span>
-          <span class="value" id="email">...</span>
+    <!-- Identity Grid -->
+    <div class="identity-grid">
+      <!-- Name -->
+      <div class="grid-row">
+        <div class="grid-label">Name</div>
+        <div class="grid-value" id="full-name">...</div>
+        <div class="grid-action"><button class="btn-small">edit</button></div>
+      </div>
+      <!-- Username -->
+      <div class="grid-row">
+        <div class="grid-label">Username</div>
+        <div class="grid-value" id="username">...</div>
+        <div class="grid-action"><button class="btn-small">edit</button></div>
+      </div>
+      <!-- Email -->
+      <div class="grid-row">
+        <div class="grid-label">Email</div>
+        <div class="grid-value" id="email">...</div>
+        <div class="grid-action"></div> <!-- Empty or edit -->
+      </div>
+      <!-- Phone -->
+      <div class="grid-row">
+        <div class="grid-label">Phone</div>
+        <div class="grid-value" id="phone">None</div>
+        <div class="grid-action"><button class="btn-small">add</button></div>
+      </div>
+      <!-- Password -->
+      <div class="grid-row">
+        <div class="grid-label">Password</div>
+        <div class="grid-value" id="password" data-masked="true">••••••••••••••••</div>
+        <div class="grid-action">
+          <button id="btn-show-pass" class="btn-small">show</button>
+          <button class="btn-small">edit</button>
         </div>
       </div>
+    </div>
 
-      <div class="actions">
-        <button id="btn-generate">NEW IDENTITY</button>
+    <!-- Inbox Section -->
+    <div id="inbox-section" class="inbox-container">
+      <div id="empty-state" class="empty-state">
+        Waiting for verification mails...
       </div>
-
-      <div id="inbox-section" class="inbox-container">
-        <div class="inbox-header">INBOX</div>
-        <div id="otp-display" class="otp-box hidden">
-          <span class="otp-label">CODE:</span>
-          <span id="otp-code" class="otp-value"></span>
-          <button id="btn-copy-otp" class="icon-btn">⎘</button>
-        </div>
-        <div id="email-list" class="email-list">
-          <div class="empty-state">No emails yet...</div>
-        </div>
+      <div id="email-list" class="email-list hidden">
+        <!-- Email items will be injected here -->
       </div>
-    </main>
+    </div>
   </div>
   <script type="module" src="popup.js"></script>
 </body>

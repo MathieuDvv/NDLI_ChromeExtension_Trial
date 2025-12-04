@@ -37,6 +37,18 @@ function fillForm(identity) {
             } else {
                 valueToFill = `${identity.firstName} ${identity.lastName}`;
             }
+        } else if (isPhone(type, name, id, placeholder)) {
+            if (identity.phone && identity.phone !== "None") {
+                // Disclaimer for phone number
+                const confirmed = window.confirm(
+                    "⚠️ SECURITY WARNING: You are about to use your REAL phone number.\n\n" +
+                    "Some services link accounts to phone numbers. Using this number might prevent you from using it on other accounts or link this burner identity to your real identity.\n\n" +
+                    "Do you want to proceed?"
+                );
+                if (confirmed) {
+                    valueToFill = identity.phone;
+                }
+            }
         }
 
         if (valueToFill) {
@@ -61,6 +73,10 @@ function isPassword(type, name, id, placeholder) {
 
 function isName(type, name, id, placeholder) {
     return name.includes('name') || id.includes('name') || placeholder.includes('name');
+}
+
+function isPhone(type, name, id, placeholder) {
+    return type === 'tel' || name.includes('phone') || id.includes('phone') || placeholder.includes('phone') || name.includes('mobile');
 }
 
 // React/Vue compatible value setter
