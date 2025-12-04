@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trial</title>
+  <link rel="stylesheet" href="../styles/main.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>TRIAL</h1>
+    </header>
+
+    <main>
+      <div id="identity-grid" class="data-grid">
+        <div class="data-row" data-copy="name">
+          <span class="label">NAME</span>
+          <span class="value" id="full-name">...</span>
+        </div>
+        <div class="data-row" data-copy="username">
+          <span class="label">USER</span>
+          <span class="value" id="username">...</span>
+        </div>
+        <div class="data-row" data-copy="password">
+          <span class="label">PASS</span>
+          <span class="value" id="password">...</span>
+        </div>
+        <div class="data-row" data-copy="email">
+          <span class="label">MAIL</span>
+          <span class="value" id="email">...</span>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button id="btn-generate">NEW IDENTITY</button>
+      </div>
+    </main>
+  </div>
+  <script type="module" src="popup.js"></script>
+</body>
+</html>

@@ -1,0 +1,93 @@
+:root {
+  --bg-color: #000000;
+  --surface-color: #111111;
+  --text-color: #EDEDED;
+  --accent-color: #333333;
+  --action-color: #FFFFFF;
+  --action-text: #000000;
+  --success-color: #00FF94;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  width: 320px;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-family: monospace; /* Fallback until Geist Mono is added */
+  font-size: 12px;
+}
+
+.container {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 16px;
+  letter-spacing: 2px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.data-grid {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--accent-color);
+}
+
+.data-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--accent-color);
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.data-row:last-child {
+  border-bottom: none;
+}
+
+.data-row:hover {
+  background-color: var(--surface-color);
+}
+
+.label {
+  color: #888;
+  font-weight: bold;
+}
+
+.value {
+  color: var(--text-color);
+  font-family: monospace;
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
+}
+
+button {
+  background-color: var(--action-color);
+  color: var(--action-text);
+  border: none;
+  padding: 8px 16px;
+  font-family: monospace;
+  font-weight: bold;
+  cursor: pointer;
+  width: 100%;
+  text-transform: uppercase;
+  transition: opacity 0.2s;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+button:active {
+  transform: translateY(1px);
+}
