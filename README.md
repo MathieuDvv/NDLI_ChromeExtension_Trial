@@ -1,4 +1,14 @@
-# Trial - Identités Jetables & Emails Temporaires
+<div align="center">
+  <img src="assets/icon128.png" alt="Trial Logo" width="128" height="128">
+  <h1>Trial</h1>
+  <p>
+    <strong>Identités Jetables & Emails Temporaires</strong>
+  </p>
+  <p>
+    <img src="https://img.shields.io/badge/Version-1.0.0-00FF94?style=for-the-badge&labelColor=1a1a1a&color=00FF94" alt="Version">
+    <img src="https://img.shields.io/badge/Privacy-First-00FF94?style=for-the-badge&labelColor=1a1a1a&color=00FF94" alt="Privacy">
+  </p>
+</div>
 
 **Trial** est une extension Chrome conçue pour protéger votre vie privée en vous permettant de générer instantanément des identités jetables et des emails temporaires fonctionnels. Contournez les formulaires d'inscription invasifs sans compromettre vos données personnelles réelles.
 
@@ -55,3 +65,7 @@ Trial n'est pas encore disponible sur le Chrome Web Store. Vous pouvez l'install
 ## 📄 Licence
 
 Ce projet est sous licence MIT. Voir le fichier [LICENSE](LICENSE) pour plus de détails.
+
+## ✍️ Auteur
+
+*   **MathieuDvv** - *Créateur & Design (Logo)* - [GitHub](https://github.com/MathieuDvv)
