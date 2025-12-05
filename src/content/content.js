@@ -106,3 +106,126 @@ function highlightInput(element) {
         element.style.boxShadow = originalShadow;
     }, 500);
 }
+
+// Experimental: In-Page Autofill Button
+function injectAutofillButton() {
+    const forms = document.querySelectorAll('form');
+    forms.forEach(form => {
+        // Check if form has relevant fields
+        const hasPassword = form.querySelector('input[type="password"]');
+        const hasEmail = form.querySelector('input[type="email"]') || form.querySelector('input[name*="email"]');
+
+        if (hasPassword || hasEmail) {
+            // Check if we already injected
+            if (form.dataset.trialInjected) return;
+            form.dataset.trialInjected = "true";
+
+            const buttonContainer = document.createElement('div');
+            // Position it: Try to find the submit button
+            const submitBtn = form.querySelector('input[type="submit"], button[type="submit"], button');
+
+            if (submitBtn) {
+                // Insert after the submit button to place it "under"
+                submitBtn.insertAdjacentElement('afterend', buttonContainer);
+            } else {
+                // Or just append to form
+                form.appendChild(buttonContainer);
+            }
+
+            // Shadow DOM to isolate styles
+            const shadow = buttonContainer.attachShadow({ mode: 'open' });
+
+            const iconUrl = chrome.runtime.getURL('assets/icon48.png');
+
+            shadow.innerHTML = `
+                <style>
+                    :host {
+                        display: block;
+                        margin: 10px 0;
+                        font-family: monospace;
+                        width: fit-content;
+                    }
+                    .trial-btn {
+                        background-color: #000;
+                        color: #fff;
+                        border: 1px solid #333;
+                        border-radius: 9999px;
+                        padding: 8px 20px;
+                        font-family: 'Courier New', Courier, monospace;
+                        font-size: 14px;
+                        font-weight: 500;
+                        cursor: pointer;
+                        display: inline-flex;
+                        align-items: center;
+                        gap: 10px;
+                        transition: transform 0.1s, box-shadow 0.1s, border-color 0.1s;
+                        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+                        text-decoration: none;
+                        line-height: 1;
+                        white-space: nowrap;
+                    }
+                    .trial-btn:hover {
+                        border-color: #00FF94;
+                    }
+                    .trial-btn:active {
+                        transform: translateY(0);
+                    }
+                    .icon-circle {
+                        background: #fff;
+                        border-radius: 50%;
+                        width: 20px;
+                        height: 20px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        flex-shrink: 0;
+                    }
+                    .icon-img {
+                        width: 14px;
+                        height: 14px;
+                        display: block;
+                    }
+                </style>
+                <button class="trial-btn" type="button">
+                    <div class="icon-circle">
+                        <img src="${iconUrl}" class="icon-img" alt="Trial Icon" />
+                    </div>
+                    Try the website
+                </button>
+            `;
+
+            const btn = shadow.querySelector('.trial-btn');
+            btn.addEventListener('click', async (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+
+                // Get identity
+                chrome.storage.local.get(['currentIdentity'], (result) => {
+                    if (result.currentIdentity) {
+                        fillForm(result.currentIdentity);
+                    } else {
+                        // Generate new
+                        chrome.runtime.sendMessage({ action: 'CMD_GENERATE_IDENTITY' }, (response) => {
+                            if (response && response.identity) {
+                                fillForm(response.identity);
+                            }
+                        });
+                    }
+                });
+            });
+        }
+    });
+}
+
+// Run injection
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', injectAutofillButton);
+} else {
+    injectAutofillButton();
+}
+
+// Observe for dynamic forms
+const observer = new MutationObserver((mutations) => {
+    injectAutofillButton();
+});
+observer.observe(document.body, { childList: true, subtree: true });
